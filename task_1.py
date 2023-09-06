@@ -116,13 +116,13 @@ phrases = [
 ]
 
 printTypWriter(hello, 0.1)
-choicePh = input('\033[34mВыберите способ ввода задания выражения:\033[0m\n\033[36m" 1 " - набор с клавиатуры\033[0m\n\033[35m" любой символ " - рандомно\033[0m : ')
+choicePhrase = input('\033[34mВыберите способ ввода задания выражения:\033[0m\n\033[36m" 1 " - набор с клавиатуры\033[0m\n\033[35m" любой символ " - рандомно\033[0m : ')
 choiceBool = input('\033[34mНадо ли возвращать полную информацию о кол-ве гласных букв в фразах:\033[0m\n\033[36m" 1 " - ДА\033[0m\n\033[35m" любой символ " - НЕТ\033[0m : ')
 if choiceBool == '1':
     necessary = True
 else:
     necessary = False
-if choicePh == '1':
+if choicePhrase == '1':
     phrase = inputRussianString('Введите выражение на русском языке: ')
     printTypWriter(phrase, 2)
     time.sleep(1)
