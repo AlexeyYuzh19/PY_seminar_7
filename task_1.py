@@ -84,10 +84,7 @@ def checkRhythm(text, inform):
         for c in phrase: 
             if c in vowels:
                 count += 1
-                if c not in dict:
-                    dict[c] = 1
-                else:
-                    dict[c] += 1
+                dict[c] = dict[c] + 1 if c in dict else 1
         tupleInf.append(count)  
         listInf.append(dict)  
         if len(set(tupleInf)) > 1:  
@@ -125,8 +122,7 @@ else:
 if choicePhrase == '1':
     phrase = inputRussianString('Введите выражение на русском языке: ')
     printTypWriter(phrase, 2)
-    time.sleep(1)
-    print(necessary)
+    time.sleep(1)    
     print(checkRhythm(phrase, necessary))
 else: 
     random.shuffle(phrases) 
