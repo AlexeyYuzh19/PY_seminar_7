@@ -35,7 +35,6 @@
 import re
 import time
 import random
-# from typing import Union, Tuple, List, Dict
 
 # Функции
 def inputRussianString(phrase): 
