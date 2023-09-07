@@ -37,25 +37,26 @@ import time
 import random
 
 # Функции
-def inputRussianString(phrase): 
-    while True: 
-        string = input(phrase) 
-        if re.match(r'^[а-яА-ЯёЁ\s-]+$', string): 
-            if len(re.findall(r'[аеёиоуыэюя]', string)) >= 2: 
-                return string 
-            else: 
-                print('\033[31mОшибка!\033[0m Введите минимум два слова с гласными буквами.') 
-        else: 
+def inputRussianString(phrase):
+    while True:
+        string = input(phrase)
+        if re.match(r'^[а-яА-ЯёЁ\s-]+$', string):
+            count = sum(1 for word in string.split() if len(word) >= 2 and re.search(r'[аеёиоуыэюя]', word))
+            if count >= 2:
+                return string
+            else:
+                print('\033[31mОшибка!\033[0m Введите минимум два слова с гласными буквами.')
+        else:
             print('\033[31mОшибка!\033[0m Допустимы только русские буквы, дефисы и пробелы.')
 
-def printTypWriter(text, lag):
-    time.sleep(lag)
+def printTypWriter(text, lagStart, lagEnd):
+    time.sleep(lagStart)
     words = text.split() 
     count = 0 
     lineLength = 0 
     for word in words:
         wordLength = len(word)
-        if lineLength + wordLength + 1 > 73: 
+        if lineLength + wordLength + 1 > 77: 
             print('\n', end='', flush=True) 
             count = 0 
             lineLength = 0 
@@ -65,17 +66,18 @@ def printTypWriter(text, lag):
         print(' ', end='', flush=True) 
         count += 1
         lineLength += wordLength + 1 
-        if count == 9 or lineLength >= 70: 
+        if count == 10 or lineLength >= 75: 
             print('\n', end='', flush=True) 
             count = 0 
-            lineLength = 0 
+            lineLength = 0
+    time.sleep(lagEnd) 
     print() 
 
 def checkRhythm(text, inform):
     vowels = {'а', 'е', 'ё', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я'} 
     phrases = text.lower().split()  
-    tupleInf = []  
-    listInf = []  
+    tupleInf = ["количество гласных букв:"]  
+    listInf = ["буквы:"]  
     rhythm = True    
     for phrase in phrases:  
         phrase = phrase.replace('-', '')  
@@ -86,11 +88,11 @@ def checkRhythm(text, inform):
                 count += 1
                 dict[c] = dict[c] + 1 if c in dict else 1
         tupleInf.append(count)  
-        listInf.append(dict)  
-        if len(set(tupleInf)) > 1:  
+        listInf.append(dict)        
+        if len(set(tupleInf[1:])) > 1:  
             rhythm = False              
     if inform:  
-        return rhythm, "количество гласных букв:", tupleInf, "буквы:", listInf  
+        return rhythm, tupleInf, listInf  
     else:  
         return rhythm
 
@@ -112,7 +114,7 @@ phrases = [
     "па-да-да-да-дам па-ре-там-па-да-па-да-дам"
 ]
 
-printTypWriter(hello, 0.1)
+printTypWriter(hello, 0.1, 0.1)
 choicePhrase = input('\033[34mВыберите способ ввода задания выражения:\033[0m\n\033[36m" 1 " - набор с клавиатуры\033[0m\n\033[35m" любой символ " - рандомно\033[0m : ')
 choiceBool = input('\033[34mНадо ли возвращать полную информацию о кол-ве гласных букв в фразах:\033[0m\n\033[36m" 1 " - ДА\033[0m\n\033[35m" любой символ " - НЕТ\033[0m : ')
 if choiceBool == '1':
@@ -121,13 +123,11 @@ else:
     necessary = False
 if choicePhrase == '1':
     phrase = inputRussianString('Введите выражение на русском языке: ')
-    printTypWriter(phrase, 2)
-    time.sleep(1)    
+    printTypWriter(phrase, 2, 1)       
     print(checkRhythm(phrase, necessary))
 else: 
     random.shuffle(phrases) 
     for phrase in phrases:
-        printTypWriter(phrase, 2)
-        time.sleep(1)
+        printTypWriter(phrase, 2, 1)        
         print(checkRhythm(phrase, necessary))
         
